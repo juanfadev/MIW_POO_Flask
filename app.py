@@ -84,7 +84,7 @@ def update_landmark(entity_id, json_file):
     landmark = Landmark(json_file)
     if landmark.validate():
         json.dump(landmark, f, ensure_ascii=False)
-    return landmark.to_json()
+    return landmark.toJSON()
 
 
 def get_all_landmarks():
@@ -92,8 +92,8 @@ def get_all_landmarks():
     landmarks_arr = []
     for file in landmarks_dir:
         entity_id = os.path.splitext(file)[0]
-        landmarks_arr.append(get_landmark(entity_id).to_json())
-    print(json.dumps(landmarks_arr))
+        landmarks_arr.append(get_landmark(entity_id))
+    return json.dumps(landmarks_arr, default=lambda x: x.__dict__)
 
 
 def create_landmark(json_file):
@@ -104,7 +104,7 @@ def create_landmark(json_file):
     if landmark.validate():
         f = open(f'./landmarks/{entity_id}.json', 'w', encoding='utf-8')
         json.dump(landmark, f, ensure_ascii=False)
-    return landmark.to_json()
+    return landmark.toJSON()
 
 
 # Places
@@ -127,7 +127,7 @@ def send_response(response):
     best = request.accept_mimetypes \
         .best_match(['application/json', 'text/html'])
     if best == 'application/json':
-        return response.to_json()
+        return response.toJSON()
     else:
         return response.to_html()
 
@@ -163,7 +163,7 @@ class Landmark:
         else:
             return False
 
-    def to_json(self):
+    def toJSON(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
 
