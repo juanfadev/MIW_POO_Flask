@@ -1,0 +1,33 @@
+[
+    {
+        "@context": "http://schema.org/",
+        "@type": "LandmarksOrHistoricalBuildings",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Country",
+            "addressLocality": "Locality",
+            "addressRegion": "Region"
+        },
+        "photo": "http://imageurl.com",
+        "description": "Description",
+        "mainEntityOfPage": "http://url.com",
+        "name": "Name"
+    },
+    {
+        "@context": "http://schema.org/",
+        "@type": "Place",
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Country",
+            "addressLocality": "Locality",
+            "addressRegion": "Region"
+        },
+        "postalCode": "00000",
+        "streetAddress": "StreetAddress",
+        "photo": "http://imageurl.com",
+        "telephone": "(+34) 985 555 555",
+        "description": "LoremIpsum",
+        "mainEntityOfPage": "http://mainentity.com",
+        "name": "NameOfPlace"
+    }
+]

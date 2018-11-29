@@ -1,0 +1,17 @@
+{
+    "@context": "http://schema.org/",
+    "@type": "Place",
+    "address": {
+        "@type": "PostalAddress",
+		"addressCountry": "Country",
+		"addressLocality": "Locality",
+		"addressRegion": "Region"
+    },
+    "postalCode": "00000",
+    "streetAddress": "StreetAddress",
+    "photo": "http://imageurl.com",
+    "telephone": "(+34) 985 555 555",
+    "description": "LoremIpsum",
+    "mainEntityOfPage": "http://mainentity.com",
+    "name": "NameOfPlace"
+}

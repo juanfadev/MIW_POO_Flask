@@ -1,0 +1,14 @@
+{
+	"@context": "http://schema.org/",
+	"@type": "LandmarksOrHistoricalBuildings",
+	"address": {
+		"@type": "PostalAddress",
+		"addressCountry": "Country",
+		"addressLocality": "Locality",
+		"addressRegion": "Region"
+	},
+	"photo": "http://imageurl.com",
+	"description": "Description",
+	"mainEntityOfPage": "http://url.com",
+	"name": "Name"
+}

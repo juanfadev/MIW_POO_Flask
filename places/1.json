@@ -1,0 +1,17 @@
+{
+	"@context": "http://schema.org/",
+	"@type": "Place",
+	"address": {
+		"@type": "PostalAddress",
+		"addressCountry": "España",
+		"addressLocality": "Oviedo",
+		"addressRegion": "Asturias"
+	},
+	"postalCode": "33007",
+	"streetAddress": " Senda Verde, s/n",
+	"photo": "https://upload.wikimedia.org/wikipedia/commons/d/de/Parque-de-invierno.jpg",
+	"telephone": "984 08 60 60",
+	"description": "Situado en la zona sur de la ciudad, es un lugar soleado, con una superficie de 1.000 metros cuadrados y vistas a la sierra del Aramo. Dispone de un singular jardín en forma de laberinto, con 650 laureles y una típica quintana asturiana, formada por una casona y un hórreo. Aquí se ubica también el Palacio de los Niños, un centro municipal de carácter lúdico.",
+	"mainEntityOfPage": "https://www.turismoasturias.es/descubre/naturaleza/otros-espacios/areas-recreativas/parque-de-invierno",
+	"name": "Parque del Invierno"
+}
