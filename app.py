@@ -17,19 +17,38 @@ def default_entities():
     return get_default_entities()
 
 
-@app.route('/LandmarksOrHistoricalBuildings')
+@app.route('/Places', methods=['GET', 'POST'])
+def all_places():
+    if request.method == 'POST':
+        place = create_place(request.get_json())
+        if place.validate():
+            return send_response(place)
+    elif request.method == 'GET':
+        return get_all_places()
+    else:
+        abort(401)
+        return "Not valid method"
+
+
+@app.route('/LandmarksOrHistoricalBuildings', methods=['GET', 'POST'])
 def all_landmarks():
-    return get_all_landmarks()
+    if request.method == 'POST':
+        landmark = create_landmark(request.get_json())
+        if landmark.validate():
+            return send_response(landmark)
+    elif request.method == 'GET':
+        return get_all_landmarks()
+    else:
+        abort(401)
+        return "Not valid method"
 
 
 @app.route('/LandmarksOrHistoricalBuildings/<int:entity_id>', methods=['GET', 'PUT', 'DELETE'])
 def landmarks(entity_id):
-    if request.method == 'POST':
-        create_landmark(request.get_json())
-    elif request.method == 'GET':
+    if request.method == 'GET':
         landmark = get_landmark(entity_id)
     elif request.method == 'PUT':
-        update_landmark(entity_id, request.get_json())
+        landmark = update_landmark(entity_id, request.get_json())
     elif request.method == 'DELETE':
         landmark = get_landmark(entity_id)
         if not remove_landmark(entity_id):
@@ -45,17 +64,18 @@ def landmarks(entity_id):
         return "Not valid"
 
 
-@app.route('/Places/<int:entity_id>')
+@app.route('/Places/<int:entity_id>', methods=['GET', 'PUT', 'DELETE'])
 def places(entity_id):
-    if request.method == 'POST':
-        pass
-    elif request.method == 'GET':
+    if request.method == 'GET':
         place = get_place(entity_id)
     elif request.method == 'PUT':
-        update_place(entity_id, request.get_json())
+        place = update_place(entity_id, request.get_json())
     elif request.method == 'DELETE':
-        pass
+        place = get_place(entity_id)
+        if not remove_landmark(entity_id):
+            abort(401)
     else:
+        abort(401)
         return "Not valid method"
 
     if place.validate():
@@ -83,8 +103,8 @@ def update_landmark(entity_id, json_file):
     f = open(f'./landmarks/{entity_id}.json', 'w', encoding='utf-8')
     landmark = Landmark(json_file)
     if landmark.validate():
-        json.dump(landmark, f, ensure_ascii=False)
-    return landmark.toJSON()
+        json.dump(landmark.toJSON(), f, ensure_ascii=False)
+    return landmark
 
 
 def get_all_landmarks():
@@ -98,13 +118,14 @@ def get_all_landmarks():
 
 def create_landmark(json_file):
     landmarks_dir = os.listdir('./landmarks/')
+    landmarks_dir.reverse()
     last_file = os.path.splitext(landmarks_dir[0])[0]
-    entity_id = last_file + 1
+    entity_id = int(last_file) + 1
     landmark = Landmark(json_file)
     if landmark.validate():
         f = open(f'./landmarks/{entity_id}.json', 'w', encoding='utf-8')
-        json.dump(landmark, f, ensure_ascii=False)
-    return landmark.toJSON()
+        json.dump(landmark, f, ensure_ascii=False, default=lambda x: x.__dict__)
+    return landmark
 
 
 # Places
@@ -115,11 +136,41 @@ def get_place(entity_id):
 
 
 def update_place(entity_id, json_file):
-    f = open(f'./landmarks/{entity_id}.json', 'w', encoding='utf-8')
+    f = open(f'./places/{entity_id}.json', 'w', encoding='utf-8')
     place = Place(json_file)
     if place.validate():
         json.dump(place, f, ensure_ascii=False)
-    return place.to_json()
+    return place
+
+
+def remove_place(entity_id):
+    if os.path.exists(f'./places/{entity_id}.json'):
+        os.remove(f'./places/{entity_id}.json')
+        return True
+    else:
+        print("The file does not exist")
+        return False
+
+
+def get_all_places():
+    places_dir = os.listdir('./places/')
+    places_arr = []
+    for file in places_dir:
+        entity_id = os.path.splitext(file)[0]
+        places_arr.append(get_place(entity_id))
+    return json.dumps(places_arr, default=lambda x: x.__dict__)
+
+
+def create_place(json_file):
+    places_dir = os.listdir('./places/')
+    places_dir.reverse()
+    last_file = os.path.splitext(places_dir[0])[0]
+    entity_id = int(last_file) + 1
+    place = Place(json_file)
+    if place.validate():
+        f = open(f'./places/{entity_id}.json', 'w', encoding='utf-8')
+        json.dump(place, f, ensure_ascii=False, default=lambda x: x.__dict__)
+    return place
 
 
 # Common functions
@@ -166,6 +217,9 @@ class Landmark:
     def toJSON(self):
         return json.dumps(self, default=lambda x: x.__dict__)
 
+    def to_html(self):
+        return f'<!DOCTYPE html> <html> <head> <meta charset="utf-8" /> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Landmark {self.name}</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <script type="application/ld+self"> {self.toJSON()} </script> </head> <body> <h1>Place: {self.name}</h1> <h2>Description:</h2> <p>{self.description}</p> <p>{self}</p> <h2>Address:</h2> <ul> <li> Locality: {self.address.addressLocality} </li> <li> Region: {self.address.addressRegion} </li> <li> Country: {self.address.addressCountry} </li> </ul> <img src="{self.photo}" alt="{self.name} photo" /> <a href="{self.mainEntityOfPage}">Main URL</a> </body> </html>'
+
 
 class Place(object):
     def __init__(self, d):
@@ -192,8 +246,11 @@ class Place(object):
         else:
             return False
 
-    def to_json(self):
+    def toJSON(self):
         return json.dumps(self, default=lambda x: x.__dict__)
+
+    def to_html(self):
+        return f'<!DOCTYPE html> <html> <head> <meta charset="utf-8" /> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Place {self.name}</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <script type="application/ld+self"> {self.toJSON()} </script> </head> <body> <h1>Place: {self.name}</h1> <h2>Description:</h2> <p>{self.description}</p> <p>{self}</p> <h2>Address:</h2> <ul> <li> Locality: {self.address.addressLocality} </li> <li> Region: {self.address.addressRegion} </li> <li> Country: {self.address.addressCountry} </li> </ul> <img src="{self.photo}" alt="{self.name} photo" /> <a href="{self.mainEntityOfPage}">Main URL</a> </body> </html>'
 
 
 if __name__ == '__main__':
