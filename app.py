@@ -250,7 +250,7 @@ class Place(object):
         return json.dumps(self, default=lambda x: x.__dict__)
 
     def to_html(self):
-        return f'<!DOCTYPE html> <html> <head> <meta charset="utf-8" /> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Place {self.name}</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <script type="application/ld+json"> {self.toJSON()} </script> </head> <body> <h1>Place: {self.name}</h1> <h2>Description:</h2> <p>{self.description}</p> <p>{self}</p> <h2>Address:</h2> <ul> <li> Locality: {self.address.addressLocality} </li> <li> Region: {self.address.addressRegion} </li> <li> Country: {self.address.addressCountry} </li> </ul> <img src="{self.photo}" alt="{self.name} photo" /> <a href="{self.mainEntityOfPage}">Main URL</a> </body> </html>'
+        return f'<!DOCTYPE html> <html> <head> <meta charset="utf-8" /> <meta http-equiv="X-UA-Compatible" content="IE=edge"> <title>Place {self.name}</title> <meta name="viewport" content="width=device-width, initial-scale=1"> <script type="application/ld+json"> {self.toJSON()} </script> </head> <body> <h1>Place: {self.name}</h1> <h2>Description:</h2> <p>{self.description}</p>  <h2>Address:</h2> <ul> <li> Locality: {self.address.addressLocality} </li> <li> Region: {self.address.addressRegion} </li> <li> Country: {self.address.addressCountry} </li> </ul> <img src="{self.photo}" alt="{self.name} photo" /> <a href="{self.mainEntityOfPage}">Main URL</a> </body> </html>'
 
 
 if __name__ == '__main__':
