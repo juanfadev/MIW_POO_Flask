@@ -108,7 +108,7 @@ def update_landmark(entity_id, json_file):
 
 
 def get_all_landmarks():
-    landmarks_dir = os.listdir('./landmarks/')
+    landmarks_dir = sorted(os.listdir('./landmarks/'))
     landmarks_arr = []
     for file in landmarks_dir:
         entity_id = os.path.splitext(file)[0]
@@ -117,7 +117,7 @@ def get_all_landmarks():
 
 
 def create_landmark(json_file):
-    landmarks_dir = os.listdir('./landmarks/')
+    landmarks_dir = sorted(os.listdir('./landmarks/'))
     landmarks_dir.reverse()
     last_file = os.path.splitext(landmarks_dir[0])[0]
     entity_id = int(last_file) + 1
@@ -153,7 +153,7 @@ def remove_place(entity_id):
 
 
 def get_all_places():
-    places_dir = os.listdir('./places/')
+    places_dir = sorted(os.listdir('./places/'))
     places_arr = []
     for file in places_dir:
         entity_id = os.path.splitext(file)[0]
@@ -162,7 +162,7 @@ def get_all_places():
 
 
 def create_place(json_file):
-    places_dir = os.listdir('./places/')
+    places_dir = sorted(os.listdir('./places/'))
     places_dir.reverse()
     last_file = os.path.splitext(places_dir[0])[0]
     entity_id = int(last_file) + 1
