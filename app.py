@@ -139,7 +139,7 @@ def update_place(entity_id, json_file):
     f = open(f'./places/{entity_id}.json', 'w', encoding='utf-8')
     place = Place(json_file)
     if place.validate():
-        json.dump(place, f, ensure_ascii=False)
+        json.dump(place.toJSON(), f, ensure_ascii=False)
     return place
 
 
